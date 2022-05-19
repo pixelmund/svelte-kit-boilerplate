@@ -1,0 +1,29 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// This generator is used to provide type information to Pothos.
+generator pothos {
+  provider     = "prisma-pothos-types"
+  clientOutput = "@prisma/client"
+  output       = "./_generated_types_.ts"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id String @id @default(uuid())
+
+  name     String
+  email    String  @unique
+  hashedPassword String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
