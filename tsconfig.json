@@ -13,7 +13,8 @@
 			"$graphql": ["src/graphql"],
 			"$graphql/*": ["src/graphql/*"],
 			"$lib": ["src/lib"],
-			"$lib/*": ["src/lib/*"]
+			"$lib/*": ["src/lib/*"],
+			"$houdini": ["$houdini"]
 		}
 	}
 }

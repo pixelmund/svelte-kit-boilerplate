@@ -1,0 +1,43 @@
+input ChangePasswordInput {
+  currentPassword: String!
+  newPassword: String!
+}
+
+scalar DateTime
+
+input EditUserInput {
+  name: String
+}
+
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+type Mutation {
+  changePassword(input: ChangePasswordInput!): Result!
+  editUser(input: EditUserInput!): User!
+  login(input: LoginInput!): User!
+  logout: Result!
+  signUp(input: SignUpInput!): User!
+}
+
+type Query {
+  me: User
+}
+
+enum Result {
+  SUCCESS
+}
+
+input SignUpInput {
+  email: String!
+  name: String!
+  password: String!
+}
+
+type User {
+  email: String
+  id: ID!
+  name: String!
+}

@@ -21,7 +21,13 @@ const config = {
 		vite: {
 			resolve: {
 				alias: {
-					$graphql: resolvePath('./src/graphql')
+					$graphql: resolvePath('./src/graphql'),
+					$houdini: resolvePath('.', '$houdini')
+				}
+			},
+			server: {
+				fs: {
+					allow: ['.']
 				}
 			}
 		}
