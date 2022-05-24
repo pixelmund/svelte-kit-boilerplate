@@ -11,6 +11,7 @@ specifiers:
   '@pothos/plugin-simple-objects': ^3.3.0
   '@pothos/plugin-validation': ^3.4.1
   '@prisma/client': ^3.14.0
+  '@rgossiaux/svelte-headlessui': ^1.0.1
   '@sveltejs/adapter-auto': next
   '@sveltejs/kit': next
   '@tailwindcss/forms': ^0.5.2
@@ -52,6 +53,7 @@ dependencies:
   '@pothos/plugin-simple-objects': 3.3.0_3hw3d6omkkahg4strq5xwpwzli
   '@pothos/plugin-validation': 3.4.1_oobt55oxrnrr7dioz2y3tc4xj4
   '@prisma/client': 3.14.0_prisma@3.14.0
+  '@rgossiaux/svelte-headlessui': 1.0.1_svelte@3.48.0
   felte: 1.2.2_svelte@3.48.0
   graphql: 16.5.0
   graphql-helix: 1.12.0_graphql@16.5.0
@@ -594,6 +596,14 @@ packages:
       '@types/cross-spawn': 6.0.2
       chalk: 4.1.2
       cross-spawn: 7.0.3
+    dev: false
+
+  /@rgossiaux/svelte-headlessui/1.0.1_svelte@3.48.0:
+    resolution: {integrity: sha512-Gp8Chf6moPiXAhVjtT0KiCBsv+4rPob85ctpyNGgjFkyA8PL7Hmb19FDZd+Z0o9JhCh4kYYqTfVl1TVo9L3F9w==}
+    peerDependencies:
+      svelte: ^3.44.0
+    dependencies:
+      svelte: 3.48.0
     dev: false
 
   /@rollup/pluginutils/4.2.1:
