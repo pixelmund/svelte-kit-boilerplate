@@ -28,7 +28,10 @@ declare namespace App {
 
 	// interface Platform {}
 
-	// interface Session {}
+	interface Session {
+		loggedIn: boolean;
+		userId?: string;
+	}
 
 	// interface Stuff {}
 }

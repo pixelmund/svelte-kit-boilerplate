@@ -1,4 +1,4 @@
-import type { RequestEvent } from '@sveltejs/kit/types/private';
+import type { RequestEvent } from '@sveltejs/kit';
 import {
 	getGraphQLParameters,
 	processRequest,
@@ -27,6 +27,7 @@ async function graphqlHandler(event: RequestEvent) {
 	}
 
 	const parameters = getGraphQLParameters(graphqlRequest);
+	const sessionData = await locals.session.data();
 
 	const result = await processRequest<GraphqlContext, unknown>({
 		...parameters,
@@ -34,7 +35,7 @@ async function graphqlHandler(event: RequestEvent) {
 		contextFactory: () => ({
 			locals,
 			event,
-			userId: locals.session.data?.userId
+			userId: sessionData?.userId
 		}),
 		request: graphqlRequest,
 		schema

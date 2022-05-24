@@ -27,7 +27,7 @@ builder.mutationField('logout', (t) =>
 	t.field({
 		type: Result,
 		resolve: async (_root, _args, { locals }) => {
-			locals.session.destroy();
+			await locals.session.destroy();
 			return Result.SUCCESS;
 		}
 	})
@@ -54,7 +54,7 @@ builder.mutationField('login', (t) =>
 		},
 		resolve: async (_query, _root, { input }, { locals }) => {
 			const user = await authenticateUser(input.email, input.password);
-			locals.session.data = { userId: user.id };
+			await locals.session.data({ userId: user.id });
 
 			return user;
 		}
@@ -96,7 +96,7 @@ builder.mutationField('signUp', (t) =>
 				}
 			});
 
-			locals.session.data = { userId: user.id };
+			await locals.session.data({ userId: user.id });
 
 			return user;
 		}
