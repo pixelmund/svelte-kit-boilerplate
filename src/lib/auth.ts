@@ -19,7 +19,7 @@ export async function hashPassword(password: string): Promise<string> {
 		password,
 		salt,
 		costFactor: COST_FACTOR,
-		outputType: 'encoded',
+		outputType: 'encoded'
 	});
 
 	return key;
@@ -28,13 +28,10 @@ export async function hashPassword(password: string): Promise<string> {
 /**
  * Verify that a hashed password and a plain text password match.
  */
-export function verifyPassword(
-	hashedPassword: string,
-	password: string,
-): Promise<boolean> {
+export function verifyPassword(hashedPassword: string, password: string): Promise<boolean> {
 	return bcryptVerify({
 		password,
-		hash: hashedPassword,
+		hash: hashedPassword
 	});
 }
 
@@ -45,25 +42,26 @@ export async function authenticateUser(email: string, password: string) {
 	const user = await db.user.findFirst({
 		where: {
 			email: {
-				equals: email,
-			},
-		},
+				equals: email
+			}
+		}
 	});
 
 	if (!user || !user.hashedPassword) {
 		throw new ValidationError('Email not found', {
-			email: 'Email not found.',
+			email: 'Email not found.'
 		});
 	}
 
 	// If the password is invalid, reject the authenticate request:
 	if (!(await verifyPassword(user.hashedPassword, password))) {
 		throw new ValidationError('Invalid password.', {
-			password: 'Password is incorrect.',
+			password: 'Password is incorrect.'
 		});
 	}
 
 	// Hash should be in the form of $2b$costFactor$hash
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [, _algo, costFactorString] = user.hashedPassword.split('$');
 
 	// NOTE: This never practically should happen, but we want to error out in the event that it does:
@@ -78,17 +76,17 @@ export async function authenticateUser(email: string, password: string) {
 		const improvedHash = await hashPassword(password);
 		await db.user.update({
 			where: { id: user.id },
-			data: { hashedPassword: improvedHash },
+			data: { hashedPassword: improvedHash }
 		});
 	}
 
 	// When you successfully sign-in, we consider any password resets that you've
 	// created to be invalid, so we clear them from the database:
-	// await db.passwordReset.deleteMany({
-	// 	where: {
-	// 		userId: user.id,
-	// 	},
-	// });
+	await db.passwordReset.deleteMany({
+		where: {
+			userId: user.id
+		}
+	});
 
 	return user;
 }

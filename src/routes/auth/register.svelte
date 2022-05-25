@@ -1,9 +1,22 @@
+<script context="module" lang="ts">
+	import type { Load } from '@sveltejs/kit';
+
+	export const load: Load = function () {
+		return {
+			stuff: {
+				title: 'Create an account'
+			}
+		};
+	};
+</script>
+
 <script lang="ts">
 	import { Field, createForm } from '$lib/forms';
 	import { object, string } from 'zod';
 	import { graphql, mutation } from '$houdini';
 	import type { SignUp } from '$houdini';
 	import SubmitButton from '$lib/ui/buttons/SubmitButton.svelte';
+	import { goto } from '$app/navigation';
 
 	const SignUpSchema = object({
 		name: string().nonempty(),
@@ -31,34 +44,19 @@
 					password
 				}
 			});
-			window.location.href = '/';
+			goto('/auth-redirect');
 		}
 	});
 </script>
 
-<div class="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-	<div class="sm:mx-auto sm:w-full sm:max-w-md">
-		<img
-			class="mx-auto h-12 w-auto"
-			src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
-			alt="Workflow"
-		/>
-		<h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">Create a new account</h2>
+<form use:form class="space-y-6" method="POST">
+	<Field type="text" name="name" label="Name" />
+	<Field type="email" name="email" label="Email address" />
+	<Field type="password" name="password" label="Password" />
+	<div>
+		{#if $formError}
+			<p class="mb-2 text-sm text-red-600">{$formError}</p>
+		{/if}
+		<SubmitButton isSubmitting={$isSubmitting} full>Sign up</SubmitButton>
 	</div>
-
-	<div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-		<div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-			<form use:form class="space-y-6" method="POST">
-				<Field type="text" name="name" label="Name" />
-				<Field type="email" name="email" label="Email address" />
-				<Field type="password" name="password" label="Password" />
-				<div>
-					{#if $formError}
-						<p class="mb-2 text-sm text-red-600">{$formError}</p>
-					{/if}
-					<SubmitButton isSubmitting={$isSubmitting} full>Sign up</SubmitButton>
-				</div>
-			</form>
-		</div>
-	</div>
-</div>
+</form>

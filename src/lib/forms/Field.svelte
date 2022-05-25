@@ -40,7 +40,13 @@
 		{label}
 	</Label>
 	<div class="mt-1 relative rounded-md shadow-sm">
-		<Input {id} {name} {type} {value} class={klass} />
+		<Input
+			{id}
+			{name}
+			{type}
+			{value}
+			class="{hasError ? '!border-red-500' : ''} {klass}"
+		/>
 		<div
 			class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none transition-opacity {hasError
 				? 'opacity-100'

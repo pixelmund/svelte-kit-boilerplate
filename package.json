@@ -57,6 +57,7 @@
 		"@pothos/plugin-validation": "^3.4.1",
 		"@prisma/client": "^3.14.0",
 		"@rgossiaux/svelte-headlessui": "^1.0.1",
+		"date-fns": "^2.28.0",
 		"felte": "^1.2.2",
 		"graphql": "^16.5.0",
 		"graphql-helix": "^1.12.0",

@@ -1,0 +1,1 @@
+<h2 class="mt-6 text-center text-5xl font-extrabold text-gradient bg-gradient-to-r from-indigo-700 to-purple-500 leading-normal italic">skytro</h2>

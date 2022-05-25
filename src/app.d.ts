@@ -33,5 +33,7 @@ declare namespace App {
 		userId?: string;
 	}
 
-	// interface Stuff {}
+	interface Stuff {
+		title?: string;
+	}
 }

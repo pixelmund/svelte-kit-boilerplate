@@ -9,6 +9,10 @@ input EditUserInput {
   name: String
 }
 
+input ForgotPasswordInput {
+  email: String!
+}
+
 input LoginInput {
   email: String!
   password: String!
@@ -17,13 +21,20 @@ input LoginInput {
 type Mutation {
   changePassword(input: ChangePasswordInput!): Result!
   editUser(input: EditUserInput!): User!
+  forgotPassword(input: ForgotPasswordInput!): Result!
   login(input: LoginInput!): User!
   logout: Result!
+  resetPassword(input: ResetPasswordInput!): Result!
   signUp(input: SignUpInput!): User!
 }
 
 type Query {
   me: User
+}
+
+input ResetPasswordInput {
+  code: String!
+  newPassword: String!
 }
 
 enum Result {

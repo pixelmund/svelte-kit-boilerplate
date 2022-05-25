@@ -5,8 +5,6 @@
 	export let name: string;
 	export let hasError: boolean = false;
 
-	$: console.log(messages);
-
 	$: if (messages && messages.length > 0) {
 		hasError = true;
 	} else if (hasError) {

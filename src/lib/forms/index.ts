@@ -2,7 +2,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { writable } from 'svelte/store';
 import { createForm as createFelteForm } from 'felte';
-import type { ValidatorConfig } from '@felte/validator-zod';
 
 import { reporter } from '@felte/reporter-svelte';
 import { validator } from '@felte/validator-zod';
@@ -26,7 +25,7 @@ interface FormProps<T extends Zod.ZodSchema> {
 export function createForm<T extends Zod.ZodSchema>(options: FormProps<T>) {
 	const formError = writable<string | null>(null);
 
-	const form = createFelteForm<T, ValidatorConfig>({
+	const form = createFelteForm({
 		onSubmit: async function (data) {
 			formError.set(null);
 			await options.onSubmit(data);
@@ -41,7 +40,7 @@ export function createForm<T extends Zod.ZodSchema>(options: FormProps<T>) {
 		},
 		initialValues: options.initialValues,
 		// @ts-ignore
-		extend: options.schema ? [validator({ schema: options.schema }), reporter] : [reporter]
+		extend: options.schema ? [validator({ schema: options.schema }), reporter()] : [reporter]
 	});
 
 	return {
