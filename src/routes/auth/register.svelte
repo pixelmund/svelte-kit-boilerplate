@@ -3,6 +3,7 @@
 	import { object, string } from 'zod';
 	import { graphql, mutation } from '$houdini';
 	import type { SignUp } from '$houdini';
+	import SubmitButton from '$lib/ui/buttons/SubmitButton.svelte';
 
 	const SignUpSchema = object({
 		name: string().nonempty(),
@@ -20,7 +21,7 @@
 		}
 	`);
 
-	const { form, formError } = createForm({
+	const { form, formError, isSubmitting } = createForm({
 		schema: SignUpSchema,
 		onSubmit: async ({ email, password, name }) => {
 			await signUp({
@@ -55,11 +56,7 @@
 					{#if $formError}
 						<p class="mb-2 text-sm text-red-600">{$formError}</p>
 					{/if}
-					<button
-						type="submit"
-						class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-						>Sign up</button
-					>
+					<SubmitButton isSubmitting={$isSubmitting} full>Sign up</SubmitButton>
 				</div>
 			</form>
 		</div>
