@@ -9,7 +9,7 @@ generator client {
 generator pothos {
   provider     = "prisma-pothos-types"
   clientOutput = "@prisma/client"
-  output       = "./_generated_types_.ts"
+  output       = "../../node_modules/@pothos/plugin-prisma/generated.ts"
 }
 
 datasource db {

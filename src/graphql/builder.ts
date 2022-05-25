@@ -5,7 +5,7 @@ import ScopeAuthPlugin from '@pothos/plugin-scope-auth';
 import SimpleObjectsPlugin from '@pothos/plugin-simple-objects';
 import ValidationPlugin from '@pothos/plugin-validation';
 import { db } from '$lib/db';
-import type PrismaTypes from '../prisma/_generated_types_';
+import type PrismaTypes from '@pothos/plugin-prisma/generated';
 
 export type SchemaBuilderContext = {
 	PrismaTypes: PrismaTypes;

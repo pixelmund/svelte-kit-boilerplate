@@ -1,7 +1,6 @@
 import adapter from '@sveltejs/adapter-auto';
 import preprocess from 'svelte-preprocess';
 import houdini from 'houdini/preprocess'
-import { resolve as resolvePath } from 'path';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -20,13 +19,11 @@ const config = {
 		methodOverride: {
 			allowed: ['PATCH', 'DELETE']
 		},
+		alias: {
+			$graphql: 'src/graphql',
+			$houdini: '$houdini'
+		},
 		vite: {
-			resolve: {
-				alias: {
-					$graphql: resolvePath('./src/graphql'),
-					$houdini: resolvePath('.', '$houdini')
-				}
-			},
 			server: {
 				fs: {
 					allow: ['.']
