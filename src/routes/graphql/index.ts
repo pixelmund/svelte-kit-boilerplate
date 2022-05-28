@@ -20,7 +20,7 @@ async function graphqlHandler(event: RequestEvent) {
 
 	if (shouldRenderGraphiQL(graphqlRequest)) {
 		return {
-			body: renderGraphiQL({}),
+			body: renderGraphiQL(),
 			headers: { 'Content-Type': 'text/html' },
 			status: 200
 		};

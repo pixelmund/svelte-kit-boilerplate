@@ -1,4 +1,4 @@
-import adapter from '@sveltejs/adapter-auto';
+import adapter from '@sveltejs/adapter-node';
 import preprocess from 'svelte-preprocess';
 import houdini from 'houdini/preprocess'
 
@@ -21,7 +21,7 @@ const config = {
 		},
 		alias: {
 			$graphql: 'src/graphql',
-			$houdini: '$houdini'
+			$houdini: './$houdini'
 		},
 		vite: {
 			server: {
