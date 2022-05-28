@@ -3,7 +3,8 @@
 	"version": "0.0.1",
 	"scripts": {
 		"start": "node ./build/index.js",
-		"dev": "svelte-kit dev",
+		"dev": "railway run npm run dev:kit",
+		"dev:kit": "svelte-kit dev",
 		"build": "svelte-kit build",
 		"package": "svelte-kit package",
 		"preview": "svelte-kit preview",
@@ -14,7 +15,8 @@
 		"lint": "prettier --ignore-path .gitignore --check --plugin-search-dir=. . && eslint --ignore-path .gitignore .",
 		"format": "prettier --ignore-path .gitignore --write --plugin-search-dir=. .",
 		"generate": "houdini generate -p",
-		"postinstall": "houdini generate && prisma generate"
+		"postinstall": "houdini generate && prisma generate",
+		"prisma": "railway run prisma"
 	},
 	"devDependencies": {
 		"@playwright/test": "^1.22.2",
