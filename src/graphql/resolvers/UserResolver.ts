@@ -6,10 +6,13 @@ builder.prismaObject('User', {
 	fields: (t) => ({
 		id: t.exposeID('id', {}),
 		name: t.exposeString('name', {}),
+		emailVerified: t.exposeBoolean('emailVerified', {}),
 		email: t.string({
 			nullable: true,
-			resolve: (user, _args, { userId }) => {
-				if (user.id !== userId) return null;
+			resolve: async (user, _args, { userId, locals }) => {
+				const sessionUserId = userId || (await locals.session.data())?.userId;
+				if (!sessionUserId) return null;
+				if (user.id !== sessionUserId) return null;
 				return user.email;
 			}
 		})

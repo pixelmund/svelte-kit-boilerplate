@@ -26,6 +26,7 @@ type Mutation {
   logout: Result!
   resetPassword(input: ResetPasswordInput!): Result!
   signUp(input: SignUpInput!): User!
+  verifyEmail(input: VerifyEmailInput!): Result!
 }
 
 type Query {
@@ -49,6 +50,11 @@ input SignUpInput {
 
 type User {
   email: String
+  emailVerified: Boolean!
   id: ID!
   name: String!
+}
+
+input VerifyEmailInput {
+  code: String!
 }

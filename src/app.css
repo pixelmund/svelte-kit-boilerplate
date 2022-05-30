@@ -18,3 +18,7 @@ html,
 body {
 	height: 100%;
 }
+
+.app-container {
+	@apply min-h-[386px] flex flex-col items-center justify-center;
+}

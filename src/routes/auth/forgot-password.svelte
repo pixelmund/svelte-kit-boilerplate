@@ -44,7 +44,6 @@
 			if (result?.forgotPassword === Result.SUCCESS) {
 				showSuccessMessage = true;
 				reset();
-				// @ts-expect-error
 				setErrors('email', null);
 				return;
 			}
@@ -52,7 +51,7 @@
 	});
 </script>
 
-<form use:form class="space-y-6" method="POST">
+<form use:form class="space-y-6 w-full" method="POST">
 	<Field type="email" name="email" label="Email address" />
 	<div>
 		{#if showSuccessMessage}

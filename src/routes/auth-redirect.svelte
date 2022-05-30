@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import AppLayout from '$lib/AppLayout.svelte';
+
 	let finished: boolean = false;
 	onMount(() => {
 		setTimeout(() => {
@@ -11,13 +13,14 @@
 	});
 </script>
 
-<div class="flex h-screen w-full pt-4 sm:pt-16 justify-center">
-	<div
-		class="max-w-sm rounded-2xl bg-white shadow h-16 font-semibold w-full flex items-center justify-center mx-auto"
-	>
+<AppLayout>
+	<h2 class="mb-8 text-xl text-center font-extrabold text-gray-800">
+		Signed in! Redirecting you
+	</h2>
+	<div class="flex justify-center items-center">
 		{#if finished}
 			<svg
-				class="w-8 h-8 text-green-400 inline-block mr-2"
+				class="w-10 h-10 text-green-400 inline-block"
 				fill="currentColor"
 				viewBox="0 0 20 20"
 				xmlns="http://www.w3.org/2000/svg"
@@ -29,7 +32,7 @@
 			>
 		{:else}
 			<svg
-				class="animate-spin mr-4 h-6 w-6 text-gray-400"
+				class="animate-spin h-10 w-10 text-gray-500"
 				xmlns="http://www.w3.org/2000/svg"
 				fill="none"
 				viewBox="0 0 24 24"
@@ -42,7 +45,5 @@
 				/>
 			</svg>
 		{/if}
-
-		<h1 class="">Signed in... Redirecting you...</h1>
 	</div>
-</div>
+</AppLayout>

@@ -2,6 +2,11 @@ import { authenticateUser, hashPassword, verifyPassword } from '$lib/auth';
 import { db } from '$lib/db';
 import { builder } from '$graphql/builder';
 import { Result } from './ResultResolver';
+import {
+	ENABLE_EMAIL_VERIFICATION,
+	sendVerificationEmail,
+	verifyEmailToken
+} from '$lib/verification';
 
 builder.queryField('me', (t) =>
 	t.prismaField({
@@ -54,7 +59,16 @@ builder.mutationField('login', (t) =>
 		},
 		resolve: async (_query, _root, { input }, { locals }) => {
 			const user = await authenticateUser(input.email, input.password);
-			await locals.session.data({ userId: user.id });
+
+			if (ENABLE_EMAIL_VERIFICATION) {
+				if (user.emailVerified) {
+					await locals.session.data({ userId: user.id });
+				} else {
+					await sendVerificationEmail(user);
+				}
+			} else {
+				await locals.session.data({ userId: user.id });
+			}
 
 			return user;
 		}
@@ -96,9 +110,39 @@ builder.mutationField('signUp', (t) =>
 				}
 			});
 
-			await locals.session.data({ userId: user.id });
+			if (ENABLE_EMAIL_VERIFICATION) {
+				await sendVerificationEmail(user);
+			} else {
+				await locals.session.data({ userId: user.id });
+			}
 
 			return user;
+		}
+	})
+);
+
+const VerifyEmailInput = builder.inputType('VerifyEmailInput', {
+	fields: (t) => ({
+		code: t.string({})
+	})
+});
+
+builder.mutationField('verifyEmail', (t) =>
+	t.field({
+		type: Result,
+		skipTypeScopes: true,
+		authScopes: {
+			unauthenticated: true
+		},
+		args: {
+			input: t.arg({ type: VerifyEmailInput })
+		},
+		resolve: async (_root, { input }, { locals }) => {
+			const user = await verifyEmailToken(input.code);
+
+			await locals.session.data({ userId: user.id });
+
+			return Result.SUCCESS;
 		}
 	})
 );

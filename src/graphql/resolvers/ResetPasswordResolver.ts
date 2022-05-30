@@ -3,6 +3,8 @@ import { hashPassword } from '$lib/auth';
 import { db } from '$lib/db';
 import { builder } from '../builder';
 import { Result } from './ResultResolver';
+import { ENABLE_EMAIL_VERIFICATION, PUBLIC_URL } from '$lib/verification';
+import { sendEmail } from '$lib/email';
 
 const ForgotPasswordInput = builder.inputType('ForgotPasswordInput', {
 	fields: (t) => ({
@@ -31,11 +33,9 @@ builder.mutationField('forgotPassword', (t) =>
 			// Avoid an email verification bypass where a user can sign-up,
 			// reset their password, and then create a session by finishing
 			// the sign-in through the reset password flow:
-			// if (ENABLE_EMAIL_VERIFICATION && !user.emailVerified) {
-			// 	throw new Error(
-			// 		'You cannot reset your password until the email address is verified.',
-			// 	);
-			// }
+			if (ENABLE_EMAIL_VERIFICATION && !user.emailVerified) {
+				throw new Error('You cannot reset your password until the email address is verified.');
+			}
 
 			const reset = await db.passwordReset.create({
 				data: {
@@ -45,13 +45,11 @@ builder.mutationField('forgotPassword', (t) =>
 				}
 			});
 
-			console.log('RESET_ID:', reset.id);
-
-			// await sendEmail({
-			// 	to: user.email,
-			// 	subject: 'Nytro: Reset your password',
-			// 	textBody: `We received a request to reset your Nytro account password. To reset your password, follow this link: ${PUBLIC_URL}/auth/reset?code=${reset.id}. If you did not request this, you can ignore this email.`,
-			// });
+			await sendEmail({
+				to: user.email,
+				subject: 'Skytro: Reset your password',
+				textBody: `We received a request to reset your Skytro account password. To reset your password, follow this link: ${PUBLIC_URL}/auth/reset/${reset.id}. If you did not request this, you can ignore this email.`
+			});
 
 			return Result.SUCCESS;
 		}

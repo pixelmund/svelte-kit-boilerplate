@@ -19,8 +19,8 @@
 	import { goto } from '$app/navigation';
 
 	const LoginSchema = object({
-		email: string().email().nonempty(),
-		password: string().min(6).nonempty()
+		email: string().email().min(1),
+		password: string().min(6)
 	});
 
 	const signIn = mutation<SignIn>(graphql`
@@ -29,6 +29,7 @@
 				id
 				email
 				name
+				emailVerified
 			}
 		}
 	`);
@@ -36,18 +37,27 @@
 	const { form, formError, isSubmitting } = createForm({
 		schema: LoginSchema,
 		onSubmit: async ({ email, password }) => {
-			await signIn({
+			const result = await signIn({
 				input: {
 					email,
 					password
 				}
 			});
-			goto('/auth-redirect');
+			if (!result) return;
+			if (import.meta.env.VITE_ENABLE_EMAIL_VERIFICATION === 'true') {
+				if (!result.login.emailVerified) {
+					formError.set('Please verify your email address');
+				} else {
+					goto('/auth-redirect');
+				}
+			} else {
+				goto('/auth-redirect');
+			}
 		}
 	});
 </script>
 
-<form use:form class="space-y-6" method="POST">
+<form use:form class="space-y-6 w-full" method="POST">
 	<Field type="email" name="email" label="Email address" />
 	<Field type="password" name="password" label="Password" />
 	<div class="flex items-center justify-between">

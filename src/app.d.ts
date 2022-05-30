@@ -2,6 +2,10 @@
 
 interface ImportMetaEnv {
 	VITE_COOKIE_SECRET: string;
+	VITE_POSTMARK_FROM_EMAIL: string;
+	VITE_POSTMARK_SERVER_API_TOKEN: string;
+	VITE_ENABLE_EMAIL_VERIFICATION: string;
+	VITE_PUBLIC_URL: string;
 }
 
 interface GraphqlContext {

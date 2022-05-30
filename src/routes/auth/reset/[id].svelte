@@ -21,8 +21,8 @@
 	import { goto } from '$app/navigation';
 
 	const ResetPasswordSchema = object({
-		newPassword: string().min(6).nonempty(),
-		confirm: string().min(6).nonempty()
+		newPassword: string().min(6),
+		confirm: string().min(6)
 	}).refine((data) => data.newPassword === data.confirm, {
 		message: "Passwords don't match",
 		path: ['confirm'] // path of error
@@ -51,7 +51,7 @@
 	});
 </script>
 
-<form use:form class="space-y-6" method="POST">
+<form use:form class="space-y-6 w-full" method="POST">
 	<Field type="password" name="newPassword" label="New password" />
 	<Field type="password" name="confirm" label="Confirm new password" />
 	<div>
