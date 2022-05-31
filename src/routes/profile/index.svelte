@@ -116,7 +116,13 @@
 								<p class="block mb-0 leading-none mt-1">********</p>
 							{/if}
 							<Button
-								on:click={() => (confirmPasswordModalOpen = !confirmPasswordModalOpen)}
+								on:click={() => {
+									if (canUpdatePassword) {
+										canUpdatePassword = false;
+									} else {
+										confirmPasswordModalOpen = true;
+									}
+								}}
 								variant="ghost"
 								size="small"
 								class="ml-auto pointer-events-auto !py-1.5 !px-2 !bg-white"
@@ -192,7 +198,9 @@
 			<Button form="verify_password_form" type="submit" class="sm:ml-3" variant="primary">
 				Unlock
 			</Button>
-			<Button type="button" variant="ghost" on:click={() => (confirmPasswordModalOpen = false)}>Close</Button>
+			<Button type="button" variant="ghost" on:click={() => (confirmPasswordModalOpen = false)}
+				>Close</Button
+			>
 		</svelte:fragment>
 	</Modal>
 {/if}
