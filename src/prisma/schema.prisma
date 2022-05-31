@@ -27,16 +27,31 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  emailVerified Boolean @default(false)
-  verificationCode String @default(uuid())
+  emailVerified    Boolean @default(false)
+  verificationCode String  @default(uuid())
 
   passwordResets PasswordReset[]
+  notes          Note[]
 }
 
 model PasswordReset {
   id        String   @id @default(uuid())
+
   createdAt DateTime @default(now())
   expiresAt DateTime
+  
   user      User     @relation(fields: [userId], references: [id])
   userId    String
+}
+
+model Note {
+  id String @id @default(uuid())
+
+  text String
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

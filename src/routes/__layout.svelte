@@ -7,6 +7,9 @@
 
 <script lang="ts">
 	import '../app.css';
+	import AppLayout from '$lib/AppLayout.svelte';
 </script>
 
-<slot />
+<AppLayout>
+	<slot />
+</AppLayout>

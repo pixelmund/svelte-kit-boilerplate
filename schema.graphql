@@ -3,7 +3,20 @@ input ChangePasswordInput {
   newPassword: String!
 }
 
+input CreateNoteInput {
+  text: String!
+}
+
 scalar DateTime
+
+input DeleteNoteInput {
+  id: ID!
+}
+
+input EditNoteInput {
+  id: ID!
+  text: String!
+}
 
 input EditUserInput {
   name: String
@@ -20,6 +33,9 @@ input LoginInput {
 
 type Mutation {
   changePassword(input: ChangePasswordInput!): Result!
+  createNote(input: CreateNoteInput!): Note!
+  deleteNote(input: DeleteNoteInput!): Note!
+  editNote(input: EditNoteInput!): Note!
   editUser(input: EditUserInput!): User!
   forgotPassword(input: ForgotPasswordInput!): Result!
   login(input: LoginInput!): User!
@@ -29,8 +45,40 @@ type Mutation {
   verifyEmail(input: VerifyEmailInput!): Result!
 }
 
+interface Node {
+  id: ID!
+}
+
+type Note implements Node {
+  createdAt: DateTime!
+  id: ID!
+  text: String!
+  user: User!
+}
+
+type PageInfo {
+  endCursor: String
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+}
+
 type Query {
   me: User
+  node(id: ID!): Node
+  nodes(ids: [ID!]!): [Node]!
+  note(id: ID!): Note!
+  notes(after: String, before: String, first: Int, last: Int): QueryNotesConnection!
+}
+
+type QueryNotesConnection {
+  edges: [QueryNotesConnectionEdge]!
+  pageInfo: PageInfo!
+}
+
+type QueryNotesConnectionEdge {
+  cursor: String!
+  node: Note!
 }
 
 input ResetPasswordInput {
@@ -53,6 +101,17 @@ type User {
   emailVerified: Boolean!
   id: ID!
   name: String!
+  notes(after: String, before: String, first: Int, last: Int): UserNotesConnection!
+}
+
+type UserNotesConnection {
+  edges: [UserNotesConnectionEdge]!
+  pageInfo: PageInfo!
+}
+
+type UserNotesConnectionEdge {
+  cursor: String!
+  node: Note!
 }
 
 input VerifyEmailInput {

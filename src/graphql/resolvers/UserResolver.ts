@@ -15,6 +15,10 @@ builder.prismaObject('User', {
 				if (user.id !== sessionUserId) return null;
 				return user.email;
 			}
+		}),
+		notes: t.relatedConnection('notes', {
+			cursor: 'id',
+			query: () => ({ orderBy: { createdAt: 'desc' } })
 		})
 	})
 });

@@ -24,6 +24,7 @@
 	export let id: string = '';
 	export let value: string = '';
 	export let label: string = '';
+	export let containerClass: string = '';
 
 	$: if (!id) {
 		id = name;
@@ -35,7 +36,7 @@
 	export { klass as class };
 </script>
 
-<div>
+<div class={containerClass}>
 	<Label {id}>
 		{label}
 	</Label>

@@ -20,5 +20,5 @@ body {
 }
 
 .app-container {
-	@apply min-h-[386px] flex flex-col items-center justify-center;
+	@apply min-h-[326px] flex flex-col items-center justify-center md:min-h-[386px];
 }
