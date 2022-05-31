@@ -25,6 +25,7 @@
 	export let value: string = '';
 	export let label: string = '';
 	export let containerClass: string = '';
+	export let disabled: boolean = false;
 
 	$: if (!id) {
 		id = name;
@@ -42,8 +43,10 @@
 	</Label>
 	<div class="mt-1 relative rounded-md shadow-sm">
 		<Input
+			{...$$restProps}
 			{id}
 			{name}
+			{disabled}
 			{type}
 			{value}
 			class="{hasError ? '!border-red-500' : ''} {klass}"

@@ -158,6 +158,27 @@ const ChangePasswordInput = builder.inputType('ChangePasswordInput', {
 	})
 });
 
+builder.mutationField('verifyPassword', (t) =>
+	t.field({
+		type: Result,
+		args: {
+			input: t.arg({ type: ChangePasswordInput })
+		},
+		resolve: async (_root, { input }, { userId }) => {
+			const user = await db.user.findUnique({ where: { id: userId }, rejectOnNotFound: true });
+
+			// First, we make sure that your current password is currect:
+			const passwordValid = await verifyPassword(user.hashedPassword, input.currentPassword);
+
+			if (!passwordValid) {
+				throw new Error('Current password was not correct.');
+			}
+
+			return Result.SUCCESS;
+		}
+	})
+);
+
 builder.mutationField('changePassword', (t) =>
 	t.field({
 		type: Result,

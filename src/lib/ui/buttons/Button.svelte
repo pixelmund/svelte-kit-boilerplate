@@ -16,7 +16,7 @@
 	on:click
 	{...$$restProps}
 	{type}
-	class="inline-flex items-center font-medium rounded focus:outline-none focus:ring-2 focus:ring-offset-2 {BUTTON_SIZE_CLASSES[
+	class="inline-flex items-center font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 {BUTTON_SIZE_CLASSES[
 		size
 	]} {BUTTON_VARIANT_CLASSES[variant]} {klass} {full ? 'w-full text-center justify-center' : ''}"
 >

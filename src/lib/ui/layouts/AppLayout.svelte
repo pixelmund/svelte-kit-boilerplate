@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Logo from './Logo.svelte';
+	import Logo from '../Logo.svelte';
 </script>
 
 <div class="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">

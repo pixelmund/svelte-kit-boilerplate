@@ -7,7 +7,7 @@
 
 <script lang="ts">
 	import '../app.css';
-	import AppLayout from '$lib/AppLayout.svelte';
+	import AppLayout from '$lib/ui/layouts/AppLayout.svelte';
 </script>
 
 <AppLayout>
