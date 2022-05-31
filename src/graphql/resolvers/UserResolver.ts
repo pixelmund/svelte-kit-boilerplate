@@ -1,3 +1,4 @@
+import { hashPassword } from '$lib/auth';
 import { db } from '$lib/db';
 import { builder } from '../builder';
 
@@ -25,6 +26,12 @@ builder.prismaObject('User', {
 
 const EditUserInput = builder.inputType('EditUserInput', {
 	fields: (t) => ({
+		canUpdatePassword: t.boolean({
+			required: false
+		}),
+		password: t.string({
+			required: false,
+		}),
 		name: t.string({
 			required: false,
 			validate: {
@@ -41,7 +48,13 @@ builder.mutationField('editUser', (t) =>
 		args: {
 			input: t.arg({ type: EditUserInput })
 		},
-		resolve: (query, _root, { input }, { userId }) => {
+		resolve: async (query, _root, { input }, { userId }) => {
+			let hashedPassword: string | undefined = undefined;
+
+			if (input.canUpdatePassword && input.password && input.password.length > 5) {
+				hashedPassword = await hashPassword(input.password);
+			}
+
 			return db.user.update({
 				...query,
 				where: {
@@ -51,7 +64,8 @@ builder.mutationField('editUser', (t) =>
 					// NOTE: Because `name` may be `null`, we use `?? undefined` to ensure that
 					// it is either a value, or undefined.
 					// https://www.prisma.io/docs/concepts/components/prisma-client/null-and-undefined
-					name: input.name ?? undefined
+					name: input.name ?? undefined,
+					hashedPassword
 				}
 			});
 		}

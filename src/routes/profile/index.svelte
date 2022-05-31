@@ -1,7 +1,15 @@
 <script lang="ts">
-	import { graphql, mutation, query, type ProfileQuery, type UpdateProfile } from '$houdini';
+	import {
+		graphql,
+		mutation,
+		query,
+		type ProfileQuery,
+		type UpdateProfile,
+		type VerifyPassword
+	} from '$houdini';
 	import { createForm } from '$lib/forms';
 	import Field from '$lib/forms/Field.svelte';
+	import { Result } from '$lib/result';
 	import Button from '$lib/ui/buttons/Button.svelte';
 	import SubmitButton from '$lib/ui/buttons/SubmitButton.svelte';
 	import { Modal, ModalTitle, ModalDescription } from '$lib/ui/modals';
@@ -30,17 +38,50 @@
 		}
 	`);
 
-	const { form } = createForm({
+	const verifyPassword = mutation<VerifyPassword>(graphql`
+		mutation VerifyPassword($password: String!) {
+			verifyPassword(password: $password)
+		}
+	`);
+
+	const { form, isSubmitting } = createForm({
 		schema: object({
 			name: string().min(1),
-			email: string().email().min(1)
+			email: string().email().min(1),
+			password: string()
+				.optional()
+				.refine(
+					(pw) => {
+						if (canUpdatePassword && pw && pw.length < 6) {
+							return false;
+						}
+						return true;
+					},
+					{ message: 'Password must be at least 6 characters' }
+				)
 		}),
 		initialValues: {
 			name: $data?.me?.name ?? undefined,
 			email: $data?.me?.email ?? undefined
 		},
-		onSubmit: async ({ name }) => {
-			await updateProfile({ input: { name } });
+		onSubmit: async ({ name, password }) => {
+			await updateProfile({ input: { name, canUpdatePassword, password } });
+		}
+	});
+
+	const { form: verifyPasswordForm, formError: verifiedPasswordFormError } = createForm({
+		schema: object({
+			verifiedPassword: string().min(6)
+		}),
+		initialValues: {},
+		onSubmit: async ({ verifiedPassword }) => {
+			const result = await verifyPassword({ password: verifiedPassword });
+
+			if (result?.verifyPassword === Result.SUCCESS) {
+				canUpdatePassword = true;
+				confirmPasswordModalOpen = false;
+			} else {
+			}
 		}
 	});
 </script>
@@ -125,29 +166,33 @@
 		</div>
 		<div class="pt-5">
 			<div class="flex justify-end">
-				<SubmitButton isSubmitting={false}>Save</SubmitButton>
+				<SubmitButton isSubmitting={$isSubmitting}>Save</SubmitButton>
 			</div>
 		</div>
 	</form>
 	<Modal bind:isOpen={confirmPasswordModalOpen}>
 		<svelte:fragment>
-			<ModalTitle>Confirm your password</ModalTitle>
-			<ModalDescription class="mt-4 text-sm text-gray-500">
-				To unlock updating your password, please enter your current password.
-			</ModalDescription>
+			<form id="verify_password_form" method="POST" use:verifyPasswordForm>
+				<ModalTitle>Confirm your password</ModalTitle>
+				<ModalDescription class="mt-4 text-sm text-gray-500">
+					To unlock updating your password, please enter your current password.
+				</ModalDescription>
+				<Field
+					containerClass="mt-4"
+					name="verifiedPassword"
+					label="Current password"
+					type="password"
+				/>
+				{#if $verifiedPasswordFormError}
+					<p class="mt-4 mb-2 text-sm text-red-600">{$verifiedPasswordFormError}</p>
+				{/if}
+			</form>
 		</svelte:fragment>
 		<svelte:fragment slot="footer">
-			<Button
-				class="sm:ml-3"
-				variant="primary"
-				on:click={() => {
-					confirmPasswordModalOpen = false;
-					canUpdatePassword = true;
-				}}
-			>
+			<Button form="verify_password_form" type="submit" class="sm:ml-3" variant="primary">
 				Unlock
 			</Button>
-			<Button variant="ghost" on:click={() => (confirmPasswordModalOpen = false)}>Close</Button>
+			<Button type="button" variant="ghost" on:click={() => (confirmPasswordModalOpen = false)}>Close</Button>
 		</svelte:fragment>
 	</Modal>
 {/if}

@@ -1,3 +1,4 @@
 export enum Result {
-	SUCCESS = 'SUCCESS'
+	SUCCESS = 'SUCCESS',
+	FAILURE = 'FAILURE'
 }

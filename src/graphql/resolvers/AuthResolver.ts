@@ -7,6 +7,7 @@ import {
 	sendVerificationEmail,
 	verifyEmailToken
 } from '$lib/verification';
+import { ValidationError } from '$graphql/errors';
 
 builder.queryField('me', (t) =>
 	t.prismaField({
@@ -162,16 +163,18 @@ builder.mutationField('verifyPassword', (t) =>
 	t.field({
 		type: Result,
 		args: {
-			input: t.arg({ type: ChangePasswordInput })
+			password: t.arg.string({ validate: { minLength: 6 } })
 		},
-		resolve: async (_root, { input }, { userId }) => {
+		resolve: async (_root, { password }, { userId }) => {
 			const user = await db.user.findUnique({ where: { id: userId }, rejectOnNotFound: true });
 
 			// First, we make sure that your current password is currect:
-			const passwordValid = await verifyPassword(user.hashedPassword, input.currentPassword);
+			const passwordValid = await verifyPassword(user.hashedPassword, password);
 
 			if (!passwordValid) {
-				throw new Error('Current password was not correct.');
+				throw new ValidationError('Your current password is incorrect.', {
+					verifiedPassword: 'Your current password is incorrect.'
+				});
 			}
 
 			return Result.SUCCESS;

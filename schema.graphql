@@ -19,7 +19,9 @@ input EditNoteInput {
 }
 
 input EditUserInput {
+  canUpdatePassword: Boolean
   name: String
+  password: String
 }
 
 input ForgotPasswordInput {
@@ -43,6 +45,7 @@ type Mutation {
   resetPassword(input: ResetPasswordInput!): Result!
   signUp(input: SignUpInput!): User!
   verifyEmail(input: VerifyEmailInput!): Result!
+  verifyPassword(password: String!): Result!
 }
 
 interface Node {
@@ -87,6 +90,7 @@ input ResetPasswordInput {
 }
 
 enum Result {
+  FAILURE
   SUCCESS
 }
 
