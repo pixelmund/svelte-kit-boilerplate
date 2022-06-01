@@ -24,12 +24,11 @@
 		type NoteQuery,
 		type NoteQuery$afterLoad
 	} from '$houdini';
-	import { createForm } from '$lib/forms';
-	import TextArea from '$lib/forms/TextArea.svelte';
-	import LoadingSpinner from '$lib/icons/LoadingSpinner.svelte';
+	import { createForm, Form, TextArea } from '$lib/forms';
 	import { ButtonOrLink } from '$lib/ui/buttons';
 	import { formatDistance } from 'date-fns';
 	import { object, string } from 'zod';
+	import { LoadingSpinner } from '$lib/icons';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { PencilAlt, ArrowLeft } from '@steeze-ui/heroicons';
 
@@ -112,7 +111,7 @@
 	</div>
 	<div class="my-auto">
 		{#if editMode}
-			<form class="w-full flex relative" use:form method="POST">
+			<Form class="w-full flex relative" {form} {isSubmitting}>
 				<TextArea name="text" class="!rounded-xl !pr-20" />
 				<button
 					type="submit"
@@ -124,7 +123,7 @@
 						<Icon src={PencilAlt} class="w-5 h-5" />
 					{/if}
 				</button>
-			</form>
+			</Form>
 		{:else}
 			<h1 class="text-xl font-semibold">{note.text}</h1>
 		{/if}

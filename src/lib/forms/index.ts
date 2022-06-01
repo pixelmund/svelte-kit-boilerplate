@@ -9,6 +9,8 @@ import { validator } from '@felte/validator-zod';
 export { default as Field } from './Field.svelte';
 export { default as Label } from './Label.svelte';
 export { default as Input } from './TextInput.svelte';
+export { default as TextArea } from './TextArea.svelte';
+export { default as Form } from './Form.svelte';
 
 type OnSubmit<T extends Zod.ZodSchema> = (data: Zod.infer<T>) => void | Promise<void>;
 
@@ -19,6 +21,7 @@ type RecursivePartial<T extends Record<string, any>> = {
 interface FormProps<T extends Zod.ZodSchema> {
 	schema: T;
 	onSubmit: OnSubmit<T>;
+	onError?: (error: any) => any;
 	initialValues?: RecursivePartial<Zod.infer<T>>;
 }
 
@@ -32,11 +35,26 @@ export function createForm<T extends Zod.ZodSchema>(options: FormProps<T>) {
 		},
 		onError: (err: any) => {
 			if (!err) return;
-			if (!Array.isArray(err)) {
-				formError.set(err.message);
+
+			if (options.onError) {
+				options.onError(err);
+			}
+
+			if (err && Array.isArray(err)) {
+				for (let index = 0; index < err.length; index++) {
+					const error = err[index];
+					if (error && error.extensions && error.extensions.properties) {
+						for (const key in error.extensions.properties) {
+							const prop = error.extensions.properties[key];
+							form.setErrors(key as any, prop);
+						}
+					}
+				}
 				return;
 			}
-			formError.set(err[0].message);
+
+			formError.set(err.message);
+			return;
 		},
 		initialValues: options.initialValues,
 		// @ts-ignore

@@ -11,12 +11,12 @@
 </script>
 
 <script lang="ts">
-	import { Field, createForm } from '$lib/forms';
+	import { Field, createForm, Form } from '$lib/forms';
 	import { object, string } from 'zod';
 	import { graphql, mutation } from '$houdini';
 	import type { ResetPassword } from '$houdini';
 	import { SubmitButton } from '$lib/ui/buttons';
-	import { Result } from '$lib/result';
+	import { Result } from '$lib/utils/result';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 
@@ -51,7 +51,7 @@
 	});
 </script>
 
-<form use:form class="space-y-6 w-full" method="POST">
+<Form {form} {isSubmitting} class="space-y-6 w-full" method="POST">
 	<Field type="password" name="newPassword" label="New password" />
 	<Field type="password" name="confirm" label="Confirm new password" />
 	<div>
@@ -60,4 +60,4 @@
 		{/if}
 		<SubmitButton isSubmitting={$isSubmitting} full>Reset &amp; sign in</SubmitButton>
 	</div>
-</form>
+</Form>

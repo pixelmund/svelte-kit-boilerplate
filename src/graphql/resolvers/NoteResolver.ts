@@ -20,6 +20,9 @@ builder.queryField('notes', (t) =>
 				...query,
 				where: {
 					userId
+				},
+				orderBy: {
+					createdAt: 'desc'
 				}
 			});
 		}
@@ -47,6 +50,7 @@ builder.queryField('note', (t) =>
 
 const CreateNoteInput = builder.inputType('CreateNoteInput', {
 	fields: (t) => ({
+		id: t.string({ required: false, validate: { uuid: true } }),
 		text: t.string({ validate: { minLength: 1 } })
 	})
 });
@@ -61,6 +65,7 @@ builder.mutationField('createNote', (t) =>
 			return db.note.create({
 				...query,
 				data: {
+					id: input?.id ?? undefined,
 					userId,
 					text: input.text
 				}

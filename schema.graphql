@@ -4,6 +4,7 @@ input ChangePasswordInput {
 }
 
 input CreateNoteInput {
+  id: String
   text: String!
 }
 

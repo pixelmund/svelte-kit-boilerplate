@@ -15,7 +15,7 @@
 	import type { VerifyEmail } from '$houdini';
 	import { onMount, tick } from 'svelte';
 	import { page } from '$app/stores';
-	import { Result } from '$lib/result';
+	import { Result } from '$lib/utils/result';
 	import { goto } from '$app/navigation';
 	import LoadingSpinner from '$lib/icons/LoadingSpinner.svelte';
 

@@ -11,7 +11,7 @@
 </script>
 
 <script lang="ts">
-	import { Field, createForm } from '$lib/forms';
+	import { Field, createForm, Form } from '$lib/forms';
 	import { object, string } from 'zod';
 	import { graphql, mutation } from '$houdini';
 	import type { SignUp } from '$houdini';
@@ -56,7 +56,7 @@
 	});
 </script>
 
-<form use:form class="space-y-6 w-full" method="POST">
+<Form {form} {isSubmitting} class="space-y-6 w-full" method="POST">
 	<Field type="text" name="name" label="Name" />
 	<Field type="email" name="email" label="Email address" />
 	<Field type="password" name="password" label="Password" />
@@ -71,4 +71,4 @@
 		{/if}
 		<SubmitButton isSubmitting={$isSubmitting} full>Sign up</SubmitButton>
 	</div>
-</form>
+</Form>

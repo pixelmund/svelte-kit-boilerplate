@@ -16,10 +16,10 @@
 	import { graphql, mutation } from '$houdini';
 	import type { ForgotPassword } from '$houdini';
 	import { SubmitButton, ButtonOrLink } from '$lib/ui/buttons';
-	import { Result } from '$lib/result';
+	import { Result } from '$lib/utils/result';
 
 	const ForgotPasswordSchema = object({
-		email: string().email().nonempty()
+		email: string().email().min(1)
 	});
 
 	const forgotPassword = mutation<ForgotPassword>(graphql`

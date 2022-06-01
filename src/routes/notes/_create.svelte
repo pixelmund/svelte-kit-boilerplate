@@ -1,12 +1,11 @@
 <script lang="ts">
-	import { graphql, mutation } from '$houdini';
 	import type { CreateNote } from '$houdini';
 	import { object, string } from 'zod';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Plus } from '@steeze-ui/heroicons';
-	import { createForm } from '$lib/forms';
-	import TextInput from '$lib/forms/TextInput.svelte';
-	import LoadingSpinner from '$lib/icons/LoadingSpinner.svelte';
+	import { graphql, mutation } from '$houdini';
+	import { createForm, Input as TextInput, Form } from '$lib/forms';
+	import { LoadingSpinner } from '$lib/icons';
 
 	const createNote = mutation<CreateNote>(graphql`
 		mutation CreateNote($input: CreateNoteInput!) {
@@ -23,13 +22,27 @@
 			text: string().min(1)
 		}),
 		onSubmit: async ({ text }) => {
-			await createNote({ input: { text } });
+			// we generate an id on the client so we can provide an optimistic response
+			const id = crypto.randomUUID();
+			// Because of pothos encoding ids to base64 we have to handle it here:
+			const base64_id = window.btoa(`Note:${id}`);
+
+			await createNote(
+				{ input: { text, id } },
+				{
+					optimisticResponse: {
+						// @ts-ignore
+						createNote: { id: base64_id, text, createdAt: new Date() }
+					}
+				}
+			);
+
 			reset();
 		}
 	});
 </script>
 
-<form class="w-full flex relative" use:form method="POST">
+<Form class="w-full flex relative" {form} {isSubmitting}>
 	<TextInput name="text" class="rounded-xl" />
 	<button
 		type="submit"
@@ -41,4 +54,4 @@
 			<Icon src={Plus} class="h-5 w-5" />
 		{/if}
 	</button>
-</form>
+</Form>

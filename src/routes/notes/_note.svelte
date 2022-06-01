@@ -28,11 +28,15 @@
 	);
 
 	async function removeNote() {
-		await deleteNote({
-			input: {
-				id: $data!.id
-			}
-		});
+		await deleteNote(
+			{
+				input: {
+					id: $data!.id
+				}
+			},
+			// @ts-expect-error
+			{ optimisticResponse: { deleteNote: { id: $data!.id } } }
+		);
 	}
 </script>
 
