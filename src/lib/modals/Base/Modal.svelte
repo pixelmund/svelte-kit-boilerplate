@@ -34,7 +34,7 @@
 				class="relative bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-lg sm:w-full"
 			>
 				<div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-					<div class="mt-3 text-center sm:mt-0 sm:text-left">
+					<div class="mt-3 sm:mt-0 text-left">
 						<slot />
 					</div>
 				</div>

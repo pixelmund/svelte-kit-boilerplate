@@ -61,7 +61,7 @@
 			form={id}
 			isSubmitting={$isSubmitting}
 			type="submit"
-			class="sm:ml-3"
+			class="mr-3 sm:mr-0 sm:ml-3"
 			variant="primary">Unlock</SubmitButton
 		>
 		<Button type="button" variant="ghost" on:click={() => (isOpen = false)}>Close</Button>

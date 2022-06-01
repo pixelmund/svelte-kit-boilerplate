@@ -85,7 +85,7 @@
 					/>
 					<div class="relative">
 						<div
-							class="flex items-center justify-between absolute bottom-0 right-0 left-0 z-10 h-[38px] pl-2 pr-1 rounded-md overflow-hidden"
+							class="flex items-center justify-between absolute bottom-0 right-0 left-0 z-10 h-[42px] sm:h-[38px] pl-2 pr-1 rounded-md overflow-hidden"
 							class:pointer-events-none={canUpdatePassword}
 						>
 							{#if !canUpdatePassword}
