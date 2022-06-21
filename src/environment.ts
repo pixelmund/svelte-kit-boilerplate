@@ -1,6 +1,6 @@
-import { Environment } from '$houdini'
+import { HoudiniClient } from '$houdini'
 
-export default new Environment(async function ({ text, variables = {} }) {
+export default new HoudiniClient(async function ({ text, variables = {} }) {
 	// send the request to the api
 	const result = await this.fetch('/graphql', {
 		method: 'POST',

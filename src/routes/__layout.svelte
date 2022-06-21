@@ -1,8 +1,6 @@
 <script context="module" lang="ts">
-	import env from '../environment';
-	import { setEnvironment } from '$houdini';
-
-	setEnvironment(env);
+	import houdiniClient from '../environment';
+	houdiniClient.init();
 </script>
 
 <script lang="ts">
