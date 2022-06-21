@@ -40,7 +40,7 @@ specifiers:
   prisma: ^3.14.0
   svelte: ^3.46.0
   svelte-check: ^2.2.6
-  svelte-kit-cookie-session: 3.0.0-next.3
+  svelte-kit-cookie-session: '3'
   svelte-preprocess: ^4.10.5
   tailwindcss: ^3.0.23
   ts-node: ^10.8.0
@@ -67,7 +67,7 @@ dependencies:
   graphql-helix: 1.12.0_graphql@16.5.0
   hash-wasm: 4.9.0
   postmark: 3.0.11
-  svelte-kit-cookie-session: 3.0.0-next.3
+  svelte-kit-cookie-session: 3.0.1
   zod: 3.17.3
 
 devDependencies:
@@ -3782,8 +3782,10 @@ packages:
       svelte: 3.48.0
     dev: true
 
-  /svelte-kit-cookie-session/3.0.0-next.3:
-    resolution: {integrity: sha512-LlwCOlLFcAcBcTav/JGuA5FWkwYZyLQ9xnwzTLs8V4gfp5UYqxWFQkg0Xd58jR7kieMEVe46LP/l8DAQhbep7w==}
+  /svelte-kit-cookie-session/3.0.1:
+    resolution: {integrity: sha512-rtFV3dzHwIyI7HW5nNwcmG24aZCBvdJNA8NLPFeHHW4KkmuvnB71jhBpLsB/HnMWdMq3cZ7slcoV89nwoWooxA==}
+    dependencies:
+      zencrypt: 0.0.5
     dev: false
 
   /svelte-preprocess/4.10.6_nrkokdrdekzxnvk725432prq2q:
@@ -4258,6 +4260,10 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
     dev: true
+
+  /zencrypt/0.0.5:
+    resolution: {integrity: sha512-43kS/w8h9A7YmfS/yru8PXSXXZcfqdIsPLjMCNDHdeGG0PtAVNPutvplFZ7c5domV41frR/Yx46NjHB0d891SA==}
+    dev: false
 
   /zod/3.17.3:
     resolution: {integrity: sha512-4oKP5zvG6GGbMlqBkI5FESOAweldEhSOZ6LI6cG+JzUT7ofj1ZOC0PJudpQOpT1iqOFpYYtX5Pw0+o403y4bcg==}

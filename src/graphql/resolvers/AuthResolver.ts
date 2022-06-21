@@ -63,12 +63,12 @@ builder.mutationField('login', (t) =>
 
 			if (ENABLE_EMAIL_VERIFICATION) {
 				if (user.emailVerified) {
-					await locals.session.data({ userId: user.id });
+					await locals.session.set({ userId: user.id });
 				} else {
 					await sendVerificationEmail(user);
 				}
 			} else {
-				await locals.session.data({ userId: user.id });
+				await locals.session.set({ userId: user.id });
 			}
 
 			return user;
@@ -114,7 +114,7 @@ builder.mutationField('signUp', (t) =>
 			if (ENABLE_EMAIL_VERIFICATION) {
 				await sendVerificationEmail(user);
 			} else {
-				await locals.session.data({ userId: user.id });
+				await locals.session.set({ userId: user.id });
 			}
 
 			return user;
@@ -141,7 +141,7 @@ builder.mutationField('verifyEmail', (t) =>
 		resolve: async (_root, { input }, { locals }) => {
 			const user = await verifyEmailToken(input.code);
 
-			await locals.session.data({ userId: user.id });
+			await locals.session.set({ userId: user.id });
 
 			return Result.SUCCESS;
 		}

@@ -11,7 +11,7 @@ builder.prismaObject('User', {
 		email: t.string({
 			nullable: true,
 			resolve: async (user, _args, { userId, locals }) => {
-				const sessionUserId = userId || (await locals.session.data())?.userId;
+				const sessionUserId = userId || locals.session.data?.userId;
 				if (!sessionUserId) return null;
 				if (user.id !== sessionUserId) return null;
 				return user.email;

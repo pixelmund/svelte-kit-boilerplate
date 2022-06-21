@@ -102,7 +102,7 @@ builder.mutationField('resetPassword', (t) =>
 				}
 			});
 
-			await locals.session.data({ userId: user.id });
+			await locals.session.set({ userId: user.id });
 
 			return Result.SUCCESS;
 		}

@@ -27,7 +27,7 @@ async function graphqlHandler(event: RequestEvent) {
 	}
 
 	const parameters = getGraphQLParameters(graphqlRequest);
-	const sessionData = await locals.session.data();
+	const sessionData = locals.session.data;
 
 	const result = await processRequest<GraphqlContext, unknown>({
 		...parameters,
